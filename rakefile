@@ -1,4 +1,5 @@
 task :coffee do
+    mkdir_p 'scripts'
     sh 'coffee -w -o scripts/ -c coffee/'
 end
 

@@ -1,0 +1,3 @@
+#Ignore the compiled scripts.
+#Third party scripts will go elsewhere
+scripts/*.js
