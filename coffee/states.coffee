@@ -25,15 +25,15 @@ states.move_unit = ->
     #Move the unit.
     #TODO: The grid should be able to do this
     [old_row, old_col] = game.selected_unit.coords()
-    unit = grid.remove old_row, old_col
+    unit = game.grid.remove old_row, old_col
     if unit? and unit.shape?
-        stage.removeChild unit.shape
+        game.stage.removeChild unit.shape
     [unit.row, unit.col] = game.dest
-    grid.put_entity unit
+    game.grid.put_entity unit
 
     #Deselect the unit
     game.selected_unit = null
-    stage.update()
+    game.update()
 
     #go back to setup.
     'setup'
