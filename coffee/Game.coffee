@@ -1,3 +1,9 @@
+###
+Class to control the game.
+The point of this class is to serve
+as a thin wrapper around the map and stage
+to create a simple API for use in event handlers
+###
 class @Game
     constructor: (rows, cols, grid_x, grid_y) ->
         @selected_unit = null
@@ -5,15 +11,32 @@ class @Game
         @stage = new createjs.Stage "stage"
         @fsm = fsm
 
-        #Create the grid
-        #TODO: Use a map instead
-        @grid = new EntityGrid(rows, cols, @stage)
-        @grid.set_pos(grid_x, grid_y)
 
-    #TODO: Divide this by entity type
-    add_entities: (entities...) ->
-        for entity in entities
-            @grid.put_entity entity
+        #Create the map
+        @map = new Map rows, cols, @stage
+        @map.set_offset grid_x, grid_y
+        #TODO: Use a map instead
+        #@grid = new EntityGrid(rows, cols, @stage)
+        #@grid.set_pos(grid_x, grid_y)
+
+    add_units: (units...) ->
+        @map.add_units units...
+        @update()
+
+    add_structures: (structures...) ->
+        @map.add_structures structures...
+        @update()
+
+    create_movement_grid: ->
+        @map.create_movement_grid @selected_unit
+        @update()
+
+    clear_movement_grid: ->
+        @map.clear_selection_squares()
+        @update()
+
+    move_unit: ->
+        @map.move_unit @selected_unit, @destination...
         @update()
 
     #Update the stage

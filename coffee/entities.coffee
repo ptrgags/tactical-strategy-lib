@@ -1,6 +1,12 @@
 class @Entity
+    #Add ID numbers to our objects
+    @id: 0
+    @next_id: ->
+        Entity.id++
+
     constructor: (@row, @col, @type) ->
         @shape = null
+        @id = Entity.next_id()
 
     coords: ->
         [@row, @col]
