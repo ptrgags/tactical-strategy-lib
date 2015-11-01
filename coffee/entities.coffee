@@ -20,8 +20,8 @@ class @Player extends Entity
         @shape.addEventListener 'click', @on_click
 
     on_click: =>
-        if fsm.state == 'wait for select unit'
-            events.select_unit this
+        if fsm.state == 'select unit'
+            fsm.do_event 'select unit', this
 
 class @Rock extends Entity
     constructor: (@row, @col) ->
@@ -35,4 +35,4 @@ class @MoveSquare extends Entity
         @shape.addEventListener 'click', @on_click
 
     on_click: =>
-        events.select_movement this
+        fsm.do_event 'select movement', this

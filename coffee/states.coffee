@@ -1,57 +1,33 @@
-#User input event functions
-@events = {}
-
-#TODO: Add before wait callback?
-#TODO: Add a way to pass data to FSM or no?
-
 #Create the game finite state machine
-@fsm = new FSM 'before select unit'
+@fsm = new FSM 'select unit'
 
-#Prepare to select a unit
-fsm.add_state 'before select unit', ->
+fsm.add_wait_state 'select unit', ->
     update_status "Please select a unit above."
-    'wait for select unit'
 
-#Wait for the user to click a unit
-fsm.add_wait 'select unit'
+fsm.add_event 'select unit', (unit) ->
+    game.selected_unit = unit #TODO: Wrap up in Game?
+    'select action'
 
-events.select_unit = (unit) ->
-    game.selected_unit = unit   #TODO: Maybe wrap up in Game?
-    fsm.state = 'before select action'
-    fsm.run()
-
-fsm.add_state 'before select action', ->
+fsm.add_wait_state 'select action', ->
     update_status "Please select an action below.",
     set_move_enabled true
-    'wait for select action'
 
-#Wait for the user to click an action button
-fsm.add_wait 'select action'
-
-#Called when the Move button is pressed
-events.select_action_move = ->
+fsm.add_event 'select action move', ->
     set_move_enabled false
-    fsm.state = "create movement grid"
-    fsm.run()
+    'create movement grid'
 
 fsm.add_state 'create movement grid', ->
     game.create_movement_grid()
-    'before select movement'
+    'select movement'
 
-fsm.add_state 'before select movement', ->
+fsm.add_wait_state 'select movement', ->
     update_status "Please select a square above."
-    'wait for select movement'
 
-#Wait for the user to click one of the movement squares
-fsm.add_wait 'select movement'
-
-#Select a movement square
-events.select_movement = (move_square) ->
-    game.destination = move_square.coords()
-    fsm.state = 'move unit'
-    fsm.run()
+fsm.add_event 'select movement', (move_square) ->
+    game.destination = move_square.coords() #TODO: Wrap up in Game?
+    'move unit'
 
 fsm.add_state 'move unit', ->
     game.clear_movement_grid()
     game.move_unit()
-    'before select unit'
+    'select unit'
