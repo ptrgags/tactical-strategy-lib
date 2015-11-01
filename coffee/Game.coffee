@@ -10,14 +10,10 @@ class @Game
         @destination = null
         @stage = new createjs.Stage "stage"
         @fsm = fsm
-
-
+        
         #Create the map
         @map = new Map rows, cols, @stage
         @map.set_offset grid_x, grid_y
-        #TODO: Use a map instead
-        #@grid = new EntityGrid(rows, cols, @stage)
-        #@grid.set_pos(grid_x, grid_y)
 
     add_units: (units...) ->
         @map.add_units units...

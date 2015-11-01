@@ -19,12 +19,9 @@ class @Player extends Entity
         @shape = shapes.player.clone()
         @shape.addEventListener 'click', @on_click
 
-    #TODO: Review these click events
     on_click: =>
-        if game.fsm.state == 'wait for select unit'
-            game.selected_unit = this
-            game.fsm.state = 'before select action'
-            game.fsm.run()
+        if fsm.state == 'wait for select unit'
+            events.select_unit this
 
 class @Rock extends Entity
     constructor: (@row, @col) ->
@@ -37,8 +34,5 @@ class @MoveSquare extends Entity
         @shape = shapes.move_square.clone()
         @shape.addEventListener 'click', @on_click
 
-    #TODO: Review these click events
     on_click: =>
-        game.destination = [@row, @col]
-        game.fsm.state = 'move unit'
-        game.fsm.run()
+        events.select_movement this

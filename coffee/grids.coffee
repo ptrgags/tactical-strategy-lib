@@ -182,7 +182,6 @@ class @Map
         @__spawn_movement_grid unit, row, col + 1, movement - 1
         @__spawn_movement_grid unit, row, col - 1, movement - 1
 
-    #TODO: Move to EntityGrid
     clear_selection_squares: ->
         for entity in @selections.get_all()
             @selections.remove_entity entity

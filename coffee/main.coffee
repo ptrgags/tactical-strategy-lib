@@ -1,6 +1,4 @@
 #Game starts here
-#TODO: Make Game class
-#TODO: Make Map class
 @init = ->
     #Create some Entities
     players = [new Player(3, 3), new Player(2,  10)]
@@ -13,12 +11,11 @@
     game.run()
 
 #TODO: Move controls to canvas
-#Move button callback
 @click_move = ->
-    game.fsm.state = "create movement grid"
-    game.fsm.run()
+    events.select_action_move()
 
-#Split into separate functions
-@update_controls = (status, move_enabled) ->
+@update_status = (status) ->
     document.getElementById('status').innerHTML = status
-    document.getElementById('move').disabled = !move_enabled
+
+@set_move_enabled = (enabled) ->
+    document.getElementById('move').disabled = !enabled
