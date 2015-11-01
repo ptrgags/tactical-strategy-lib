@@ -134,18 +134,26 @@ class @Map
     is_valid: (row, col) ->
         return @selections.is_valid row, col
 
-    #TODO: Allow unit to have a movement field
     create_movement_grid: (unit) ->
-        @__spawn_movement_grid unit, unit.row, unit.col, 4
+        @__spawn_movement_grid unit, unit.row, unit.col, unit.movement
 
-    #TODO: Factor in terrain, and allow some structures to be moved on
+    #TODO: allow some structures to be moved on
     __spawn_movement_grid: (unit, row, col, movement) ->
-        #If we're too far from the unit, stop
-        if movement < 0
-            return
-
         #If outside the grid, stop
         if not @is_valid row, col
+            return
+
+        #If we're not on the unit's square, subtract the movement
+        #cost for the terrain on this tile. default is 1
+        if not (unit.row is row and unit.col is col)
+            terra = @terrain.get row, col
+            if terra?
+                movement -= terra.movement_cost
+            else
+                movement -= 1
+
+        #If we're too far from the unit, stop
+        if movement < 0
             return
 
         #Check for structures that block movement
@@ -160,8 +168,8 @@ class @Map
         #If there is a unit already here, we can't move here, but
         #we can move past the unit
         #TODO: Enemy units should not be passable
-        unit = @units.get row, col
-        if unit?
+        other_unit = @units.get row, col
+        if other_unit?
             place_square = false
 
         #If there's already a movement square here, we can't place
@@ -176,11 +184,10 @@ class @Map
             @selections.put_entity square
 
         #Keep spawning recursively
-        #TODO: Factor in terrain movement costs
-        @__spawn_movement_grid unit, row + 1, col, movement - 1
-        @__spawn_movement_grid unit, row - 1, col, movement - 1
-        @__spawn_movement_grid unit, row, col + 1, movement - 1
-        @__spawn_movement_grid unit, row, col - 1, movement - 1
+        @__spawn_movement_grid unit, row + 1, col, movement
+        @__spawn_movement_grid unit, row - 1, col, movement
+        @__spawn_movement_grid unit, row, col + 1, movement
+        @__spawn_movement_grid unit, row, col - 1, movement
 
     clear_selection_squares: ->
         for entity in @selections.get_all()

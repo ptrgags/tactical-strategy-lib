@@ -10,7 +10,7 @@ class @Game
         @destination = null
         @stage = new createjs.Stage "stage"
         @fsm = fsm
-        
+
         #Create the map
         @map = new Map rows, cols, @stage
         @map.set_offset grid_x, grid_y
@@ -23,6 +23,10 @@ class @Game
         @map.add_structures structures...
         @update()
 
+    add_terrain: (terrain...) ->
+        @map.add_terrain terrain...
+        @update()
+
     create_movement_grid: ->
         @map.create_movement_grid @selected_unit
         @update()
@@ -31,8 +35,16 @@ class @Game
         @map.clear_selection_squares()
         @update()
 
+    select_unit: (unit) ->
+        @selected_unit = unit
+
+    set_destination: (coords) ->
+        @destination = coords
+
     move_unit: ->
         @map.move_unit @selected_unit, @destination...
+        @selected_unit = null
+        @destination = null
         @update()
 
     #Update the stage

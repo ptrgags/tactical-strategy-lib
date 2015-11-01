@@ -4,31 +4,54 @@ class @Entity
     @next_id: ->
         Entity.id++
 
-    constructor: (@row, @col, @type) ->
+    constructor: (@row, @col, @type, @layer) ->
         @shape = null
         @id = Entity.next_id()
 
     coords: ->
         [@row, @col]
 
-#TODO: Add movement setting
-#TODO: Rename to Unit?
-class @Player extends Entity
-    constructor: (@row, @col) ->
-        super(@row, @col, 'player')
+#=========================================================
+
+class @Unit extends Entity
+    constructor: (@row, @col, @type, @movement) ->
+        super(@row, @col, @type, 'unit')
+
+class @Terrain extends Entity
+    constructor: (@row, @col, @type, @movement_cost) ->
+        super(@row, @col, @type, 'terrain')
+
+class @Structure extends Entity
+    constructor: (@row, @col, @type, @is_passable) ->
+        super(@row, @col, @type, 'structure')
+
+class @SelectionSquare extends Entity
+    constructor: (@row, @col, @type) ->
+        super(@row, @col, @type, 'selection')
+
+#=========================================================
+
+class @Player extends Unit
+    constructor: (@row, @col, @movement=4) ->
+        super(@row, @col, 'player', @movement)
         @shape = shapes.player.clone()
         @shape.addEventListener 'click', @on_click
 
     on_click: =>
-        if fsm.state == 'select unit'
+        if fsm.state is 'select unit'
             fsm.do_event 'select unit', this
 
-class @Rock extends Entity
+class @Hill extends Terrain
     constructor: (@row, @col) ->
-        super(@row, @col, 'rock')
+        super(@row, @col, 'hill', 2)
+        @shape = shapes.hill.clone()
+
+class @Rock extends Structure
+    constructor: (@row, @col) ->
+        super(@row, @col, 'rock', false)
         @shape = shapes.rock.clone()
 
-class @MoveSquare extends Entity
+class @MoveSquare extends SelectionSquare
     constructor: (@row, @col) ->
         super(@row, @col, 'move square')
         @shape = shapes.move_square.clone()

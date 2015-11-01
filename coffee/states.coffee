@@ -5,7 +5,7 @@ fsm.add_wait_state 'select unit', ->
     update_status "Please select a unit above."
 
 fsm.add_event 'select unit', (unit) ->
-    game.selected_unit = unit #TODO: Wrap up in Game?
+    game.select_unit unit
     'select action'
 
 fsm.add_wait_state 'select action', ->
@@ -24,7 +24,7 @@ fsm.add_wait_state 'select movement', ->
     update_status "Please select a square above."
 
 fsm.add_event 'select movement', (move_square) ->
-    game.destination = move_square.coords() #TODO: Wrap up in Game?
+    game.set_destination move_square.coords()
     'move unit'
 
 fsm.add_state 'move unit', ->
