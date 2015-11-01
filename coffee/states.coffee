@@ -1,24 +1,40 @@
-@states = {}
+#User input event functions
+@events = {}
 
-#TODO: Rename this to states.idle or something
-#Prepare for the user to select the next unit
-states.setup = ->
-    update_controls "Please select a unit above.", false
+#TODO: Add before wait callback?
+#TODO: Add a way to pass data to FSM or no?
+
+#Create the game finite state machine
+@fsm = new FSM 'before select unit'
+
+#Prepare to select a unit
+fsm.add_state 'before select unit', ->
+    update_controls "Plese select a unit above.", false
     'wait for select unit'
 
-#TODO: Move more functionality into this event or rename
-states.select_unit = ->
-    update_controls "Please select an an action below.", true
+#Wait for the user to click a unit
+fsm.add_wait 'select unit'
+
+fsm.add_state 'before select action', ->
+    update_controls "Please select an action below.", true
     'wait for select action'
 
-#Create the movement grid for the selected unit
-states.create_movement_grid = ->
-    update_controls "Please select a square to move to", false
+#Wait for the user to click an action button
+fsm.add_wait 'select action'
+
+fsm.add_state 'create movement grid', ->
     create_movement_grid()
+    'before select movement'
+
+fsm.add_state 'before select movement', ->
+    update_controls "Please select a square above.", false
     'wait for select movement'
 
-#Move the selected unit to the selected destination
-states.move_unit = ->
+#Wait for the user to click one of the movement squares
+fsm.add_wait 'select movement'
+
+#TODO: Move most of this to Game or Map
+fsm.add_state 'move unit', ->
     #Clear any movement squares
     clear_movement_squares()
 
@@ -28,12 +44,12 @@ states.move_unit = ->
     unit = game.grid.remove old_row, old_col
     if unit? and unit.shape?
         game.stage.removeChild unit.shape
-    [unit.row, unit.col] = game.dest
+    [unit.row, unit.col] = game.destination
     game.grid.put_entity unit
 
     #Deselect the unit
     game.selected_unit = null
     game.update()
 
-    #go back to setup.
-    'setup'
+    #Wait for the next unit selection
+    'before select unit'

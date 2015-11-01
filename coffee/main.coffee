@@ -2,16 +2,6 @@
 #TODO: Make Game class
 #TODO: Make Map class
 @init = ->
-    #Create the game
-    @fsm = new FSM 'setup'
-    fsm.add_wait 'select unit'
-    fsm.add_wait 'select action'
-    fsm.add_wait 'select movement'
-    fsm.add_state 'setup', states.setup
-    fsm.add_state 'select unit', states.select_unit
-    fsm.add_state 'create movement grid', states.create_movement_grid
-    fsm.add_state 'move unit', states.move_unit
-
     #Create some Entities
     players = [new Player(3, 3), new Player(2,  10)]
     rocks = [new Rock(4, 4), new Rock(4, 6)]
@@ -66,12 +56,12 @@
     spawn_movement_grid unit, row, col - 1, movement - 1
 
 #TODO: Move controls to canvas
-
 #Move button callback
 @click_move = ->
     game.fsm.state = "create movement grid"
     game.fsm.run()
 
+#Split into separate functions
 @update_controls = (status, move_enabled) ->
     document.getElementById('status').innerHTML = status
     document.getElementById('move').disabled = !move_enabled

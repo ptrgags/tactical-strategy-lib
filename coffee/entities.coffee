@@ -17,7 +17,7 @@ class @Player extends Entity
     on_click: =>
         if game.fsm.state == 'wait for select unit'
             game.selected_unit = this
-            game.fsm.state = 'select unit'
+            game.fsm.state = 'before select action'
             game.fsm.run()
 
 class @Rock extends Entity
@@ -33,6 +33,6 @@ class @MoveSquare extends Entity
 
     #TODO: Review these click events
     on_click: =>
-        game.dest = [@row, @col]
+        game.destination = [@row, @col]
         game.fsm.state = 'move unit'
         game.fsm.run()
