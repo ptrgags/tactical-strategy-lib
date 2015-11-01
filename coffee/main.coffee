@@ -12,7 +12,7 @@
 
 #TODO: Move controls to canvas
 @click_move = ->
-    events.select_action_move()
+    fsm.do_event 'select action move'
 
 @update_status = (status) ->
     document.getElementById('status').innerHTML = status
