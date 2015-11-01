@@ -21,3 +21,7 @@ class @FSM
     run: ->
         while @is_running()
             @transition()
+
+    run_from: (state) ->
+        @state = state
+        @run()

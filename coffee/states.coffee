@@ -17,8 +17,7 @@ fsm.add_wait 'select unit'
 
 events.select_unit = (unit) ->
     game.selected_unit = unit   #TODO: Maybe wrap up in Game?
-    fsm.state = 'before select action'
-    fsm.run()
+    fsm.run_from 'before select action'
 
 fsm.add_state 'before select action', ->
     update_status "Please select an action below.",
@@ -31,8 +30,7 @@ fsm.add_wait 'select action'
 #Called when the Move button is pressed
 events.select_action_move = ->
     set_move_enabled false
-    fsm.state = "create movement grid"
-    fsm.run()
+    fsm.run_from "create movement grid"
 
 fsm.add_state 'create movement grid', ->
     game.create_movement_grid()
@@ -48,8 +46,7 @@ fsm.add_wait 'select movement'
 #Select a movement square
 events.select_movement = (move_square) ->
     game.destination = move_square.coords()
-    fsm.state = 'move unit'
-    fsm.run()
+    fsm.run_from 'move unit'
 
 fsm.add_state 'move unit', ->
     game.clear_movement_grid()
