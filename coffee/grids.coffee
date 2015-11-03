@@ -1,14 +1,11 @@
-#TODO: Add option to move object
-#TODO: Add option to swap objects
 class @Grid
     constructor: (@rows, @cols, @default = null) ->
         @grid = ((@default for col in [0...@cols]) for row in [0...@rows])
 
     put: (row, col, obj) ->
+        clobbered = @get row, col
         @grid[row][col] = obj
-
-    put_entity: (entity) ->
-        @grid[entity.row][entity.col] = entity
+        clobbered
 
     get: (row, col) ->
         @grid[row][col]
@@ -23,9 +20,24 @@ class @Grid
         objs
 
     remove: (row, col) ->
-        val = @grid[row][col]
-        @grid[row][col] = @default
-        val
+        removed = @get row, col
+        @put row, col, @default
+        removed
+
+    #Move an object from (from_row, from_col)
+    #to (to_row, to_col). Returns the clobbered
+    #value or @default if nothing was there.
+    move: (from_row, from_col, to_row, to_col) ->
+        clobbered = @remove to_row, to_col
+        obj = @remove from_row, from_col
+        @put to_row, to_col, obj
+        clobbered
+
+    swap: (row_a, col_a, row_b, col_b) ->
+        obj_a = @remove row_a, col_a
+        obj_b = @remove row_b, col_b
+        @put row_b, col_b, obj_a
+        @put row_a, col_a, obj_b
 
     is_valid: (row, col) ->
         0 <= row < @rows and 0 <= col < @cols
@@ -35,6 +47,8 @@ class @Grid
 
 #TODO: move and remove while updating the stage
 #TODO: add swapping
+#TODO: Entities should be stored in a container, not the stage itself
+#TODO: Grid lines shouldn't go here, they should be part of map
 class @EntityGrid extends @Grid
     constructor: (@rows, @cols, @stage, @cell_size = 32) ->
         super @rows, @cols
@@ -42,48 +56,52 @@ class @EntityGrid extends @Grid
         @redraw_grid()
         @stage.addChild @shape
 
-    #TODO: Use get_all
     set_offset: (x, y) ->
         @shape.x = x
         @shape.y = y
-        for row in [0...@rows]
-            for col in [0...@cols]
-                entity = @grid[row][col]
-                if entity?
-                    @update_entity_shape_pos entity
+        for entity in @get_all()
+            @update_entity_shape_pos entity
 
-    #TODO: use put
-    put_entity: (entity) ->
-        @grid[entity.row][entity.col] = entity
+    put: (row, col, entity) ->
+        super(row, col, entity)
         @update_entity_shape_pos entity
-        if entity.shape?
-            @stage.addChild entity.shape
+        @add_entity_shape entity
 
-    #TODO: Use move once created
+    put_entity: (entity) ->
+        @put entity.row, entity.col, entity
+
+    move: (from_row, from_col, to_row, to_col) ->
+        entity = @get from_row, from_col
+        [entity.row, entity.col] = [to_row, to_col]
+        super(from_row, from_col, to_row, to_col)
+
     move_entity: (entity, dest_row, dest_col) ->
-        #If we clobbered an entity, remove it from the grid
-        #and the stage and log a warning, this normally shouldn't happen
-        clobbered_entity = @get dest_row, dest_col
-        if clobbered_entity?
-            @remove_entity clobbered_entity
-            console.warn "Clobbered Entity #{clobbered_entity}"
+        @move entity.row, entity.col, dest_row, dest_col
 
-        #Reposition entity
-        @remove_entity entity
-        entity.row = dest_row
-        entity.col = dest_col
-        @put_entity entity
+    swap_entities: (entity_a, entity_b) ->
+        @swap entity_a.row, entity_a.col, entity_b.row, entity_b.col
+
+    remove: (row, col) ->
+        entity = super(row, col)
+        @remove_entity_shape entity
+        entity
 
     remove_entity: (entity) ->
-        @remove(entity.row, entity.col)
-        if entity.shape?
-            @stage.removeChild entity.shape
+        @remove entity.row, entity.col
 
     update_entity_shape_pos: (entity) ->
-        if entity.shape?
+        if entity? and entity.shape?
             shape = entity.shape
             shape.x = entity.col * @cell_size + @shape.x
             shape.y = entity.row * @cell_size + @shape.y
+
+    remove_entity_shape: (entity) ->
+        if entity? and entity.shape?
+            @stage.removeChild entity.shape
+
+    add_entity_shape: (entity) ->
+        if entity? and entity.shape?
+            @stage.addChild entity.shape
 
     #TODO: Move this to map, we only need one
     redraw_grid: ->
