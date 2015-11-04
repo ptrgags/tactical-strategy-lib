@@ -21,3 +21,11 @@
 
 @set_move_enabled = (enabled) ->
     document.getElementById('move').disabled = !enabled
+
+@update_selected_unit = (unit) ->
+    if unit?
+        document.getElementById('selected-type').innerHTML = unit.type
+        document.getElementById('selected-movement').innerHTML = unit.movement
+    else
+        document.getElementById('selected-type').innerHTML = '---'
+        document.getElementById('selected-movement').innerHTML = '---'
