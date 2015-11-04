@@ -10,10 +10,35 @@
     <script src="scripts/states.js"></script>
     <script src="scripts/main.js"></script>
 </head>
-<body onload="init();">
-    <canvas id="stage" width="640" height="480"></canvas>
-    <!-- TODO: move these to EaselJS shapes -->
-    <p id="status">---</p>
-    <button id="move" onclick="click_move();" disabled="true">Move</button>
+<body onload="init();" style='background-color: #CADABA'>
+    <div style='float: left'>
+        <canvas id="stage" width="640" height="480"></canvas>
+    </div>
+    <div style='float: left; width: 30%'>
+        <!-- TODO: move these to EaselJS shapes -->
+        <div style="background-color: #99BB00">
+            <h2>Actions</h2>
+            <p id="status">---</p>
+            <button id="move" onclick="click_move();" disabled="true">Move</button>
+            <button id="cancel" disabled="true">Cancel</button>
+            <button id="end-turn" disabled="true">End Turn</button>
+        </div>
+        <!-- TODO: Make this look nicer someday -->
+        <div style="background-color: #00BB99">
+            <h2>Selected Unit</h2>
+            <p>Type: <span id='selected-type'>---</span></p>
+            <p>Movement: <span id='selected-movement'>---</span></p>
+        </div>
+        <div style="background-color: #0099BB">
+            <h2>Under Cursor</h2>
+            <h3>Unit</h3>
+            <p>Unit Type: <span id='hover-unit'>---</span></p>
+            <h3>Structure</h3>
+            <p>Structure Type: <span id='structure-type'>---</span></p>
+            <h3>Terrain</h3>
+            <p>Terrain Type: <span id='hover-terrain'>---</span></p>
+            <p>Terrain Movement Cost<span id='hover-terrain-cost'>---</span></p>
+        </div>
+    </div>
 </body>
 </html>
