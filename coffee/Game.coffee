@@ -39,15 +39,18 @@ class @Game
         @selected_unit = unit
         update_selected_unit unit
 
+    deselect_unit: ->
+        @selected_unit = null
+        update_selected_unit null
+
     set_destination: (coords) ->
         @destination = coords
 
     move_unit: ->
         @map.move_unit @selected_unit, @destination...
-        @selected_unit = null
+        @deselect_unit()
         @destination = null
         @update()
-        update_selected_unit null
 
     #Update the stage
     update: ->

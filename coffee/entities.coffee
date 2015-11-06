@@ -40,6 +40,8 @@ class @Player extends Unit
     on_click: =>
         if fsm.state is 'select unit'
             fsm.do_event 'select unit', this
+        else if fsm.state is 'select action'
+            fsm.do_event 'deselect unit'
 
 class @Hill extends Terrain
     constructor: (@row, @col) ->

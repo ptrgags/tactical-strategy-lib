@@ -16,11 +16,20 @@
 @click_move = ->
     fsm.do_event 'select action move'
 
+@click_cancel = ->
+    if fsm.state is 'select action'
+        fsm.do_event 'deselect unit'
+    else if fsm.state is 'select movement'
+        fsm.do_event 'deselect action move'
+
 @update_status = (status) ->
     document.getElementById('status').innerHTML = status
 
 @set_move_enabled = (enabled) ->
     document.getElementById('move').disabled = !enabled
+
+@set_cancel_enabled = (enabled) ->
+    document.getElementById('cancel').disabled = !enabled
 
 @update_selected_unit = (unit) ->
     if unit?
