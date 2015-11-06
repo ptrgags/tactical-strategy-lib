@@ -45,20 +45,14 @@ class @Grid
     repr: ->
         "Grid(#{@rows}, #{@cols})"
 
-#TODO: move and remove while updating the stage
-#TODO: add swapping
-#TODO: Entities should be stored in a container, not the stage itself
-#TODO: Grid lines shouldn't go here, they should be part of map
 class @EntityGrid extends @Grid
-    constructor: (@rows, @cols, @stage, @cell_size = 32) ->
+    constructor: (@rows, @cols, @cell_size = 32) ->
         super @rows, @cols
-        @shape = new createjs.Shape
-        @redraw_grid()
-        @stage.addChild @shape
+        @container = new createjs.Container
 
     set_offset: (x, y) ->
-        @shape.x = x
-        @shape.y = y
+        @container.x = x
+        @container.y = y
         for entity in @get_all()
             @update_entity_shape_pos entity
 
@@ -92,20 +86,38 @@ class @EntityGrid extends @Grid
     update_entity_shape_pos: (entity) ->
         if entity? and entity.shape?
             shape = entity.shape
-            shape.x = entity.col * @cell_size + @shape.x
-            shape.y = entity.row * @cell_size + @shape.y
+            shape.x = entity.col * @cell_size
+            shape.y = entity.row * @cell_size
 
     remove_entity_shape: (entity) ->
         if entity? and entity.shape?
-            @stage.removeChild entity.shape
+            @container.removeChild entity.shape
 
     add_entity_shape: (entity) ->
         if entity? and entity.shape?
-            @stage.addChild entity.shape
+            @container.addChild entity.shape
 
-    #TODO: Move this to map, we only need one
-    redraw_grid: ->
-        gfx = @shape.graphics
+#Container for several EntityGrids representing
+#map layers
+class @Map
+    constructor: (@rows, @cols, @stage, @cell_size = 32) ->
+        #Selections
+        @selections = new EntityGrid @rows, @cols, @cell_size
+        #Players and enemies
+        @units = new EntityGrid @rows, @cols, @cell_size
+        #Structures that are mutable, unlike terrain
+        @structures = new EntityGrid @rows, @cols, @cell_size
+        #immutable terrain that represents the base of the map
+        @terrain = new EntityGrid @rows, @cols, @cell_size
+
+        #List of these for when we need to do the same thing to all
+        #layers. Listed in the order they should be added to the stage
+        #(i.e. from bottom to top)
+        @layers = [@terrain, @structures, @units, @selections]
+
+        #Draw the grid
+        @grid_lines = new createjs.Shape
+        gfx = @grid_lines.graphics
         gfx.setStrokeStyle 1
         for row in [0...@rows]
             for col in [0...@cols]
@@ -115,25 +127,14 @@ class @EntityGrid extends @Grid
         gfx.beginStroke "black"
         gfx.drawRect 0, 0, @cols * @cell_size, @rows * @cell_size
 
-#Container for several EntityGrids representing
-#map layers
-#TODO: Handle z-index when displaying each layer
-class @Map
-    constructor: (@rows, @cols, @stage, @cell_size = 32) ->
-        #Selections
-        @selections = new EntityGrid @rows, @cols, @stage, @cell_size
-        #Players and enemies
-        @units = new EntityGrid @rows, @cols, @stage, @cell_size
-        #Structures that are mutable, unlike terrain
-        @structures = new EntityGrid @rows, @cols, @stage, @cell_size
-        #immutable terrain that represents the base of the map
-        @terrain = new EntityGrid @rows, @cols, @stage, @cell_size
-
-        #List of these in case we need to do the same thing to all
-        #layers
-        @layers = [@selections, @units, @structures, @terrain]
+        #Add everything to the stage
+        @stage.addChild(@grid_lines)
+        for layer in @layers
+            @stage.addChild(layer.container)
 
     set_offset: (x, y) ->
+        @grid_lines.x = x
+        @grid_lines.y = y
         for layer in @layers
             layer.set_offset x, y
 
