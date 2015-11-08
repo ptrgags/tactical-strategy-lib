@@ -15,6 +15,9 @@ class @Game
         @map = new Map rows, cols, @stage
         @map.set_offset grid_x, grid_y
 
+        #Set stage events
+        @attach_mouse()
+
     add_units: (units...) ->
         @map.add_units units...
         @update()
@@ -55,6 +58,12 @@ class @Game
     #Update the stage
     update: ->
         @stage.update()
+
+    attach_mouse: ->
+        @stage.on 'stagemousemove', (event) =>
+            @map.on_hover(event.stageX, event.stageY)
+        @stage.on 'stagemouseup', (event) =>
+            @map.on_click(event.stageX, event.stageY)
 
     #Run the finite state machine
     #until the next wait

@@ -127,12 +127,21 @@ class @Map
         gfx.beginStroke "black"
         gfx.drawRect 0, 0, @cols * @cell_size, @rows * @cell_size
 
+        #Clickable area
+        @click_area = new createjs.Shape
+        @click_area.hitArea = new createjs.Shape
+        gfx = @click_area.hitArea.graphics
+        gfx.beginFill "black"
+        gfx.drawRect 0, 0, @cols * @cell_size, @rows * @cell_size
+
         #Add everything to the stage
-        @stage.addChild(@grid_lines)
+        @stage.addChild @grid_lines
         for layer in @layers
-            @stage.addChild(layer.container)
+            @stage.addChild layer.container
 
     set_offset: (x, y) ->
+        @click_area.x = x
+        @click_area.y = y
         @grid_lines.x = x
         @grid_lines.y = y
         for layer in @layers
@@ -155,6 +164,30 @@ class @Map
 
     create_movement_grid: (unit) ->
         @__spawn_movement_grid unit, unit.row, unit.col, unit.movement
+
+    on_hover: (mouse_x, mouse_y) ->
+        local = @click_area.globalToLocal mouse_x, mouse_y
+        if @click_area.hitArea.hitTest local.x, local.y
+            row = local.y // @cell_size
+            col = local.x // @cell_size
+            for layer in @layers
+                entity = layer.get row, col
+                if entity? and entity.on_hover?
+                    entity.on_hover()
+            unit = @units.get row, col
+            structure = @structures.get row, col
+            terra = @terrain.get row, col
+            update_under_cursor unit, structure, terra
+
+    on_click: (mouse_x, mouse_y) ->
+        local = @click_area.globalToLocal mouse_x, mouse_y
+        if @click_area.hitArea.hitTest local.x, local.y
+            row = local.y // @cell_size
+            col = local.x // @cell_size
+            for layer in @layers
+                entity = layer.get row, col
+                if entity? and entity.on_click?
+                    entity.on_click()
 
     #TODO: allow some structures to be moved on
     __spawn_movement_grid: (unit, row, col, movement) ->

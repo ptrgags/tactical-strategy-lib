@@ -10,6 +10,7 @@
     <script src="scripts/states.js"></script>
     <script src="scripts/main.js"></script>
 </head>
+<!-- TODO: Move CSS to separate stylesheet -->
 <body onload="init();" style='background-color: #CADABA'>
     <div style='float: left'>
         <canvas id="stage" width="640" height="480"></canvas>
@@ -32,12 +33,12 @@
         <div style="background-color: #0099BB">
             <h2>Under Cursor</h2>
             <h3>Unit</h3>
-            <p>Unit Type: <span id='hover-unit'>---</span></p>
+            <p>Unit Type: <span id='hover-unit-type'>---</span></p>
             <h3>Structure</h3>
-            <p>Structure Type: <span id='structure-type'>---</span></p>
+            <p>Structure Type: <span id='hover-structure-type'>---</span></p>
             <h3>Terrain</h3>
-            <p>Terrain Type: <span id='hover-terrain'>---</span></p>
-            <p>Terrain Movement Cost<span id='hover-terrain-cost'>---</span></p>
+            <p>Terrain Type: <span id='hover-terrain-type'>---</span></p>
+            <p>Terrain Movement Cost: <span id='hover-terrain-cost'>---</span></p>
         </div>
     </div>
 </body>

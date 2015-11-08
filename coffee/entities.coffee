@@ -35,7 +35,6 @@ class @Player extends Unit
     constructor: (@row, @col, @movement=4) ->
         super(@row, @col, 'player', @movement)
         @shape = shapes.player.clone()
-        @shape.addEventListener 'click', @on_click
 
     on_click: =>
         if fsm.state is 'select unit'
@@ -57,7 +56,6 @@ class @MoveSquare extends SelectionSquare
     constructor: (@row, @col) ->
         super(@row, @col, 'move square')
         @shape = shapes.move_square.clone()
-        @shape.addEventListener 'click', @on_click
 
     on_click: =>
         fsm.do_event 'select movement', this

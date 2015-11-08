@@ -22,19 +22,40 @@
     else if fsm.state is 'select movement'
         fsm.do_event 'deselect action move'
 
+@element = (id) ->
+    document.getElementById id
+
 @update_status = (status) ->
-    document.getElementById('status').innerHTML = status
+    element('status').innerHTML = status
 
 @set_move_enabled = (enabled) ->
-    document.getElementById('move').disabled = !enabled
+    element('move').disabled = !enabled
 
 @set_cancel_enabled = (enabled) ->
-    document.getElementById('cancel').disabled = !enabled
+    element('cancel').disabled = !enabled
 
 @update_selected_unit = (unit) ->
     if unit?
-        document.getElementById('selected-type').innerHTML = unit.type
-        document.getElementById('selected-movement').innerHTML = unit.movement
+        element('selected-type').innerHTML = unit.type
+        element('selected-movement').innerHTML = unit.movement
     else
-        document.getElementById('selected-type').innerHTML = '---'
-        document.getElementById('selected-movement').innerHTML = '---'
+        element('selected-type').innerHTML = '---'
+        element('selected-movement').innerHTML = '---'
+
+@update_under_cursor = (unit, structure, terrain) ->
+    if unit?
+        element('hover-unit-type').innerHTML = unit.type
+    else
+        element('hover-unit-type').innerHTML = '---'
+
+    if structure?
+        element('hover-structure-type').innerHTML = structure.type
+    else
+        element('hover-structure-type').innerHTML = '---'
+
+    if terrain?
+        element('hover-terrain-type').innerHTML = terrain.type
+        element('hover-terrain-cost').innerHTML = terrain.movement_cost
+    else
+        element('hover-terrain-type').innerHTML = '---'
+        element('hover-terrain-cost').innerHTML = 1
