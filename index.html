@@ -11,11 +11,11 @@
     <script src="scripts/main.js"></script>
 </head>
 <!-- TODO: Move CSS to separate stylesheet -->
-<body onload="init();" style='background-color: #CADABA'>
-    <div style='float: left'>
+<body onload="init();" style="background-color: #CADABA">
+    <div style="float: left">
         <canvas id="stage" width="640" height="480"></canvas>
     </div>
-    <div style='float: left; width: 30%'>
+    <div style="float: left; width: 30%">
         <!-- TODO: move these to EaselJS shapes -->
         <div style="background-color: #99BB00">
             <h2>Actions</h2>
@@ -27,18 +27,20 @@
         <!-- TODO: Make this look nicer someday -->
         <div style="background-color: #00BB99">
             <h2>Selected Unit</h2>
-            <p>Type: <span id='selected-type'>---</span></p>
-            <p>Movement: <span id='selected-movement'>---</span></p>
+            <p>Type: <span id="selected-type">---</span></p>
+            <p>Movement: <span id="selected-movement">---</span></p>
+            <p>Team: <span id="selected-team">---</span></p>
         </div>
         <div style="background-color: #0099BB">
             <h2>Under Cursor</h2>
             <h3>Unit</h3>
-            <p>Unit Type: <span id='hover-unit-type'>---</span></p>
+            <p>Unit Type: <span id="hover-unit-type">---</span></p>
+            <p>Team: <span id="hover-unit-team">---</span></p>
             <h3>Structure</h3>
-            <p>Structure Type: <span id='hover-structure-type'>---</span></p>
+            <p>Structure Type: <span id="hover-structure-type">---</span></p>
             <h3>Terrain</h3>
-            <p>Terrain Type: <span id='hover-terrain-type'>---</span></p>
-            <p>Terrain Movement Cost: <span id='hover-terrain-cost'>---</span></p>
+            <p>Terrain Type: <span id="hover-terrain-type">---</span></p>
+            <p>Terrain Movement Cost: <span id="hover-terrain-cost">---</span></p>
         </div>
     </div>
 </body>

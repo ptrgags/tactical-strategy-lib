@@ -1,7 +1,7 @@
 #Game starts here
 @init = ->
     #Create some Entities
-    players = [new Player(3, 3, 5), new Player(2,  10)]
+    players = [new Player(3, 3, 5), new Player(2, 10, 4, 2)]
     rocks = [new Rock(4, 4), new Rock(4, 6)]
     hills = (new Hill(2, i) for i in [2..6])
 
@@ -38,15 +38,19 @@
     if unit?
         element('selected-type').innerHTML = unit.type
         element('selected-movement').innerHTML = unit.movement
+        element('selected-team').innerHTML = unit.team
     else
         element('selected-type').innerHTML = '---'
         element('selected-movement').innerHTML = '---'
+        element('selected-team').innerHTML = '---'
 
 @update_under_cursor = (unit, structure, terrain) ->
     if unit?
         element('hover-unit-type').innerHTML = unit.type
+        element('hover-unit-team').innerHTML = unit.team
     else
         element('hover-unit-type').innerHTML = '---'
+        element('hover-unit-team').innerHTML = '---'
 
     if structure?
         element('hover-structure-type').innerHTML = structure.type

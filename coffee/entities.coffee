@@ -32,9 +32,14 @@ class @SelectionSquare extends Entity
 #=========================================================
 
 class @Player extends Unit
-    constructor: (@row, @col, @movement=4) ->
+    constructor: (@row, @col, @movement=4, @team=1) ->
         super(@row, @col, 'player', @movement)
-        @shape = shapes.player.clone()
+        if @team is 1
+            @shape = shapes.player.clone()
+        else
+            @shape = shapes.enemy.clone()
+            @shape.cache 0, 0, 32, 32
+
 
     on_click: =>
         if fsm.state is 'select unit'
