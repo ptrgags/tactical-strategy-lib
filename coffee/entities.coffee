@@ -1,3 +1,4 @@
+#TODO: Add a way to compare entity
 class @Entity
     #Add ID numbers to our objects
     @id: 0
@@ -32,9 +33,9 @@ class @SelectionSquare extends Entity
 #=========================================================
 
 class @Player extends Unit
-    constructor: (@row, @col, @movement=4, @team=1) ->
+    constructor: (@row, @col, @movement=4, @team=0) ->
         super(@row, @col, 'player', @movement)
-        if @team is 1
+        if @team is 0
             @shape = shapes.player.clone()
         else
             @shape = shapes.enemy.clone()
@@ -42,10 +43,11 @@ class @Player extends Unit
 
 
     on_click: =>
-        if fsm.state is 'select unit'
-            fsm.do_event 'select unit', this
-        else if fsm.state is 'select action'
-            fsm.do_event 'deselect unit'
+        if game.current_team is @team
+            if fsm.state is 'select unit'
+                fsm.do_event 'select unit', this
+            else if fsm.state is 'select action'
+                fsm.do_event 'deselect unit'
 
 class @Hill extends Terrain
     constructor: (@row, @col) ->

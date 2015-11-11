@@ -217,11 +217,13 @@ class @Map
         #make a square only if this is true.
         place_square = true
 
-        #If there is a unit already here, we can't move here, but
-        #we can move past the unit
-        #TODO: Enemy units should not be passable
+        #If there's a friendly unit here, we can pass by
+        #but not step on the unit's cell. If it's an enemy
+        #unit, UNIT SHALL NOT PASS
         other_unit = @units.get row, col
         if other_unit?
+            if other_unit.team isnt unit.team
+                return
             place_square = false
 
         #If there's already a movement square here, we can't place

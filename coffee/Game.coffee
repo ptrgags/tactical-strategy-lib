@@ -5,9 +5,12 @@ as a thin wrapper around the map and stage
 to create a simple API for use in event handlers
 ###
 class @Game
+    #TODO: Make num_teams a variable
     constructor: (rows, cols, grid_x, grid_y) ->
         @selected_unit = null
         @destination = null
+        @current_team = 0
+        @num_teams = 2
         @stage = new createjs.Stage "stage"
         @fsm = fsm
 
@@ -54,6 +57,11 @@ class @Game
         @deselect_unit()
         @destination = null
         @update()
+
+    cycle_team: ->
+        @current_team++
+        @current_team %= @num_teams
+        update_team_number(@current_team)
 
     #Update the stage
     update: ->

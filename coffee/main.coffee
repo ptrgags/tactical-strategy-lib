@@ -1,9 +1,9 @@
 #Game starts here
 @init = ->
     #Create some Entities
-    players = [new Player(3, 3, 5), new Player(2, 10, 4, 2)]
-    rocks = [new Rock(4, 4), new Rock(4, 6)]
-    hills = (new Hill(2, i) for i in [2..6])
+    players = [new Player(3, 3, 5), new Player(2, 10, 4, 1)]
+    rocks = [new Rock(4, 4), new Rock(5, 6), new Rock(2, 8), new Rock(4, 10)]
+    hills = (new Hill(i, i + 3) for i in [2..6])
 
     #Create a Game and add all the entities
     @game = new Game(10, 15, 50, 50)
@@ -25,6 +25,9 @@
 @element = (id) ->
     document.getElementById id
 
+@update_team_number = (team) ->
+    element('team').innerHTML = team + 1
+
 @update_status = (status) ->
     element('status').innerHTML = status
 
@@ -38,7 +41,7 @@
     if unit?
         element('selected-type').innerHTML = unit.type
         element('selected-movement').innerHTML = unit.movement
-        element('selected-team').innerHTML = unit.team
+        element('selected-team').innerHTML = unit.team + 1
     else
         element('selected-type').innerHTML = '---'
         element('selected-movement').innerHTML = '---'
@@ -47,7 +50,7 @@
 @update_under_cursor = (unit, structure, terrain) ->
     if unit?
         element('hover-unit-type').innerHTML = unit.type
-        element('hover-unit-team').innerHTML = unit.team
+        element('hover-unit-team').innerHTML = unit.team + 1
     else
         element('hover-unit-type').innerHTML = '---'
         element('hover-unit-team').innerHTML = '---'
