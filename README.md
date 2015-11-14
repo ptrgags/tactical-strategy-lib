@@ -1,4 +1,4 @@
-# tactical-strategy-lib
+# Turn-based Strategy
 Library of classes for making turn-based tactical strategy games. Right now
 I'm still in the early development stages, so not everything is working
 yet. Additionally, the files in the repo may change many times in the
