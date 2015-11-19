@@ -25,14 +25,6 @@ gfx.beginFill "red"
 gfx.drawCircle CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 4
 shapes.player.hitArea = shapes.click_area.clone()
 
-shapes.enemy = shapes.player.clone()
-matrix = new createjs.ColorMatrix().adjustHue(-120)
-shapes.enemy.filters = [
-    #Turn to blue
-    new createjs.ColorMatrixFilter matrix
-]
-shapes.enemy.cache 0, 0, CELL_SIZE, CELL_SIZE
-
 shapes.hill = new createjs.Shape
 gfx = shapes.hill.graphics
 gfx.beginFill "brown"

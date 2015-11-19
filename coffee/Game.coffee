@@ -54,6 +54,7 @@ class @Game
 
     move_unit: ->
         @map.move_unit @selected_unit, @destination...
+        @selected_unit.disable()
         @deselect_unit()
         @destination = null
         @update()

@@ -35,12 +35,32 @@ class @SelectionSquare extends Entity
 class @Player extends Unit
     constructor: (@row, @col, @movement=4, @team=0) ->
         super(@row, @col, 'player', @movement)
-        if @team is 0
-            @shape = shapes.player.clone()
-        else
-            @shape = shapes.enemy.clone()
-            @shape.cache 0, 0, 32, 32
+        @shape = shapes.player.clone()
+        disabled_matrix = new createjs.ColorMatrix().adjustSaturation(-100)
+        @disabled_filter = new createjs.ColorMatrixFilter disabled_matrix
+        blue_matrix = new createjs.ColorMatrix().adjustHue(-120)
+        @blue_filter = new createjs.ColorMatrixFilter blue_matrix
 
+        if @team is 0
+            @shape.filters = []
+        else
+            @shape.filters = [@blue_filter]
+        @shape.cache 0, 0, 32, 32
+
+        @disabled = false
+
+    disable: ->
+        @disabled = true
+        @shape.filters = [@disabled_filter]
+        @shape.updateCache 0, 0, 32, 32
+
+    enable: ->
+        @disabled = false
+        if @team is 0
+            @shape.filters = []
+        else
+            @shape.filters = [@blue_filter]
+        @shape.updateCache 0, 0, 32, 32
 
     on_click: =>
         if game.current_team is @team
