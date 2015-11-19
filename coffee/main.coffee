@@ -1,7 +1,10 @@
 #Game starts here
 @init = ->
     #Create some Entities
-    players = [new Player(3, 3, 5), new Player(2, 10, 4, 1)]
+    players = [
+        new Player(3, 3, 5), new Player(5, 3, 4), new Player(6, 2, 4),
+        new Player(2, 10, 4, 1), new Player(5, 12, 4, 1), new Player(6, 13, 5, 1)
+    ]
     rocks = [new Rock(4, 4), new Rock(5, 6), new Rock(2, 8), new Rock(4, 10)]
     hills = (new Hill(i, i + 3) for i in [2..6])
 
