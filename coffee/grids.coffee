@@ -46,7 +46,8 @@ class @Grid
         "Grid(#{@rows}, #{@cols})"
 
 class @EntityGrid extends @Grid
-    constructor: (@rows, @cols, @cell_size = 32) ->
+    constructor: (@rows, @cols, @cell_size = CELL_SIZE) ->
+        @cell_size = CELL_SIZE
         super @rows, @cols
         @container = new createjs.Container
 
@@ -100,7 +101,8 @@ class @EntityGrid extends @Grid
 #Container for several EntityGrids representing
 #map layers
 class @Map
-    constructor: (@rows, @cols, @stage, @cell_size = 32) ->
+    constructor: (@rows, @cols, @stage, @cell_size = CELL_SIZE) ->
+
         #Selections
         @selections = new EntityGrid @rows, @cols, @cell_size
         #Players and enemies

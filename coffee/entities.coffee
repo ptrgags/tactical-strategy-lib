@@ -45,14 +45,14 @@ class @Player extends Unit
             @shape.filters = []
         else
             @shape.filters = [@blue_filter]
-        @shape.cache 0, 0, 32, 32
+        @shape.cache 0, 0, CELL_SIZE, CELL_SIZE
 
         @disabled = false
 
     disable: ->
         @disabled = true
         @shape.filters = [@disabled_filter]
-        @shape.updateCache 0, 0, 32, 32
+        @shape.updateCache 0, 0, CELL_SIZE, CELL_SIZE
 
     enable: ->
         @disabled = false
@@ -60,7 +60,7 @@ class @Player extends Unit
             @shape.filters = []
         else
             @shape.filters = [@blue_filter]
-        @shape.updateCache 0, 0, 32, 32
+        @shape.updateCache 0, 0, CELL_SIZE, CELL_SIZE
 
     on_click: =>
         if game.current_team is @team

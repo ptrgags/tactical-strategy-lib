@@ -1,6 +1,5 @@
 @shapes = {}
-#TODO: Fetch cell size from the game settings?
-CELL_SIZE = 32
+@CELL_SIZE = 32
 
 shapes.click_area = new createjs.Shape
 gfx = shapes.click_area.graphics
