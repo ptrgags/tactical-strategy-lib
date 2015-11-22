@@ -14,14 +14,19 @@ shapes.move_square.alpha = 0.50
 
 
 #Bitmaps are nice and easy! though probably want to preload them
-shapes.rock = new createjs.Bitmap "images/makeshift-rock.png"
+shapes.rock = new createjs.Bitmap "images/rock.png"
 
+shapes.player = new createjs.Bitmap "images/player.png"
+shapes.player.hitArea = shapes.click_area.clone()
+
+###
 shapes.player = new createjs.Shape
 gfx = shapes.player.graphics
 gfx.beginStroke "black"
 gfx.beginFill "red"
 gfx.drawCircle CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 4
 shapes.player.hitArea = shapes.click_area.clone()
+###
 
 shapes.hill = new createjs.Shape
 gfx = shapes.hill.graphics
