@@ -67,7 +67,10 @@ class @Player extends Unit
             if fsm.state is 'select unit'
                 fsm.do_event 'select unit', this
             else if fsm.state is 'select action'
-                fsm.do_event 'deselect unit'
+                if @id is game.selected_unit.id
+                    fsm.do_event 'deselect unit'
+                else
+                    fsm.do_event 'select unit', this
 
 class @Hill extends Terrain
     constructor: (@row, @col) ->

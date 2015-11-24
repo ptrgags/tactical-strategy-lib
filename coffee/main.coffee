@@ -13,7 +13,7 @@
         for structure, j in row
             if structure is 1
                 structures.push new Rock(i, j)
-                
+
     players = []
     enemies = []
     for row, i in units_map
@@ -25,8 +25,8 @@
 
     #Create a Game and add all the entities
     @game = new Game(10, 15, 50, 50)
-    game.add_units players...
-    game.add_units enemies... #TODO: add_team instead of add_units
+    game.add_units 0, players...
+    game.add_units 1, enemies... #TODO: add_team instead of add_units
     game.add_structures structures...
     game.add_terrain hills...
     game.run()

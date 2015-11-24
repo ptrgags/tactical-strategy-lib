@@ -10,6 +10,7 @@ class @Game
         @selected_unit = null
         @destination = null
         @current_team = 0
+        @teams = []
         @num_teams = 2
         @stage = new createjs.Stage "stage"
         @fsm = fsm
@@ -21,8 +22,9 @@ class @Game
         #Set stage events
         @attach_mouse()
 
-    add_units: (units...) ->
+    add_units: (team, units...) ->
         @map.add_units units...
+        @teams[team] = units
         @update()
 
     add_structures: (structures...) ->
@@ -59,7 +61,18 @@ class @Game
         @destination = null
         @update()
 
+    team_active: ->
+        active = false
+        for unit in @teams[@current_team]
+            if not unit.disabled
+                active = true
+                break
+        active
+
     cycle_team: ->
+        for unit in @teams[@current_team]
+            unit.enable()
+        @update()
         @current_team++
         @current_team %= @num_teams
         update_team_number(@current_team)

@@ -46,7 +46,10 @@ fsm.add_event 'select movement', (move_square) ->
 fsm.add_state 'move unit', ->
     game.clear_movement_grid()
     game.move_unit()
-    'end turn'
+    if game.team_active()
+        'select unit'
+    else
+        'end turn'
 
 fsm.add_state 'end turn', ->
     game.cycle_team()
