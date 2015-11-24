@@ -1,6 +1,5 @@
 @shapes = {}
-#TODO: Fetch cell size from the game settings?
-CELL_SIZE = 32
+@CELL_SIZE = 32
 
 shapes.click_area = new createjs.Shape
 gfx = shapes.click_area.graphics
@@ -13,25 +12,21 @@ gfx.beginFill "green"
 gfx.drawRect 0, 0, CELL_SIZE, CELL_SIZE
 shapes.move_square.alpha = 0.50
 
-shapes.rock = new createjs.Shape
-gfx = shapes.rock.graphics
-gfx.beginFill "black"
-gfx.drawRect CELL_SIZE / 4, CELL_SIZE / 4, CELL_SIZE / 2, CELL_SIZE / 2
 
+#Bitmaps are nice and easy! though probably want to preload them
+shapes.rock = new createjs.Bitmap "images/rock.png"
+
+shapes.player = new createjs.Bitmap "images/player.png"
+shapes.player.hitArea = shapes.click_area.clone()
+
+###
 shapes.player = new createjs.Shape
 gfx = shapes.player.graphics
 gfx.beginStroke "black"
 gfx.beginFill "red"
 gfx.drawCircle CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE / 4
 shapes.player.hitArea = shapes.click_area.clone()
-
-shapes.enemy = shapes.player.clone()
-matrix = new createjs.ColorMatrix().adjustHue(-120)
-shapes.enemy.filters = [
-    #Turn to blue
-    new createjs.ColorMatrixFilter matrix
-]
-shapes.enemy.cache 0, 0, CELL_SIZE, CELL_SIZE
+###
 
 shapes.hill = new createjs.Shape
 gfx = shapes.hill.graphics

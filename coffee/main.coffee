@@ -1,14 +1,33 @@
 #Game starts here
 @init = ->
     #Create some Entities
-    players = [new Player(3, 3, 5), new Player(2, 10, 4, 1)]
-    rocks = [new Rock(4, 4), new Rock(5, 6), new Rock(2, 8), new Rock(4, 10)]
-    hills = (new Hill(i, i + 3) for i in [2..6])
+
+    hills = []
+    for row, i in terrain_map
+        for terra, j in row
+            if terra is 1
+                hills.push new Hill(i, j)
+
+    structures = []
+    for row, i in structures_map
+        for structure, j in row
+            if structure is 1
+                structures.push new Rock(i, j)
+
+    players = []
+    enemies = []
+    for row, i in units_map
+        for unit, j in row
+            if unit is 1
+                players.push new Player(i, j, 4)
+            else if unit is 2
+                enemies.push new Player(i, j, 4, 1)
 
     #Create a Game and add all the entities
     @game = new Game(10, 15, 50, 50)
-    game.add_units players...
-    game.add_structures rocks...
+    game.add_units 0, players...
+    game.add_units 1, enemies... #TODO: add_team instead of add_units
+    game.add_structures structures...
     game.add_terrain hills...
     game.run()
 
@@ -21,6 +40,12 @@
         fsm.do_event 'deselect unit'
     else if fsm.state is 'select movement'
         fsm.do_event 'deselect action move'
+
+@click_end_move = ->
+    fsm.do_event 'select action end move'
+
+@click_end_turn = ->
+    fsm.run 'end turn'
 
 @element = (id) ->
     document.getElementById id
@@ -36,6 +61,12 @@
 
 @set_cancel_enabled = (enabled) ->
     element('cancel').disabled = !enabled
+
+@set_end_move_enabled = (enabled) ->
+    element('end-move').disabled = !enabled
+
+@set_end_turn_enabled = (enabled) ->
+    element('end-turn').disabled = !enabled
 
 @update_selected_unit = (unit) ->
     if unit?
