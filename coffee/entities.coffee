@@ -50,7 +50,7 @@ class @Player extends Unit
         @enabled = true
 
     disable: ->
-        @enabled = true
+        @enabled = false
         @shape.filters = [@disabled_filter]
         @shape.updateCache 0, 0, CELL_SIZE, CELL_SIZE
 
@@ -63,7 +63,7 @@ class @Player extends Unit
         @shape.updateCache 0, 0, CELL_SIZE, CELL_SIZE
 
     on_click: =>
-        if game.current_team is @team
+        if @enabled and game.current_team is @team
             if fsm.state is 'select unit'
                 fsm.do_event 'select unit', this
             else if fsm.state is 'select action'
