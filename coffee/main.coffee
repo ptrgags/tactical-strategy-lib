@@ -41,6 +41,12 @@
     else if fsm.state is 'select movement'
         fsm.do_event 'deselect action move'
 
+@click_end_move = ->
+    fsm.do_event 'select action end move'
+
+@click_end_turn = ->
+    fsm.run 'end turn'
+
 @element = (id) ->
     document.getElementById id
 
@@ -55,6 +61,12 @@
 
 @set_cancel_enabled = (enabled) ->
     element('cancel').disabled = !enabled
+
+@set_end_move_enabled = (enabled) ->
+    element('end-move').disabled = !enabled
+
+@set_end_turn_enabled = (enabled) ->
+    element('end-turn').disabled = !enabled
 
 @update_selected_unit = (unit) ->
     if unit?

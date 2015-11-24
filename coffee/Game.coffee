@@ -61,6 +61,11 @@ class @Game
         @destination = null
         @update()
 
+    end_move: ->
+        @selected_unit.disable()
+        @deselect_unit()
+        @update()
+
     team_active: ->
         active = false
         for unit in @teams[@current_team]
