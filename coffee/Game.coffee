@@ -69,7 +69,7 @@ class @Game
     team_active: ->
         active = false
         for unit in @teams[@current_team]
-            if not unit.disabled
+            if unit.enabled
                 active = true
                 break
         active

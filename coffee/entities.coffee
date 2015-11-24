@@ -47,15 +47,15 @@ class @Player extends Unit
             @shape.filters = [@blue_filter]
         @shape.cache 0, 0, CELL_SIZE, CELL_SIZE
 
-        @disabled = false
+        @enabled = true
 
     disable: ->
-        @disabled = true
+        @enabled = true
         @shape.filters = [@disabled_filter]
         @shape.updateCache 0, 0, CELL_SIZE, CELL_SIZE
 
     enable: ->
-        @disabled = false
+        @enabled = true
         if @team is 0
             @shape.filters = []
         else
