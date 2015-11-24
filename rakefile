@@ -7,4 +7,9 @@ task :clean do
     rm_r 'scripts/'
 end
 
+task :launch do
+    url = "file:///#{File.expand_path("index.html")}"
+	sh '"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --allow-file-access-from-files ' + url
+end
+
 task default: :coffee
