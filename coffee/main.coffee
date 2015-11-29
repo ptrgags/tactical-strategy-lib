@@ -47,53 +47,50 @@
 @click_end_turn = ->
     fsm.run 'end turn'
 
-@element = (id) ->
-    document.getElementById id
-
 @update_team_number = (team) ->
-    element('team').innerHTML = team + 1
+    $('#team').html team + 1
 
 @update_status = (status) ->
-    element('status').innerHTML = status
+    $('#status').html status
 
 @set_move_enabled = (enabled) ->
-    element('move').disabled = !enabled
+    $('#move').prop 'disabled', !enabled
 
 @set_cancel_enabled = (enabled) ->
-    element('cancel').disabled = !enabled
+    $('#cancel').prop 'disabled', !enabled
 
 @set_end_move_enabled = (enabled) ->
-    element('end-move').disabled = !enabled
+    $('#end-move').prop 'disabled', !enabled
 
 @set_end_turn_enabled = (enabled) ->
-    element('end-turn').disabled = !enabled
+    $('#end-turn').prop 'disabled', !enabled
 
 @update_selected_unit = (unit) ->
     if unit?
-        element('selected-type').innerHTML = unit.type
-        element('selected-movement').innerHTML = unit.movement
-        element('selected-team').innerHTML = unit.team + 1
+        $('#selected-type').html unit.type
+        $('#selected-movement').html unit.movement
+        $('#selected-team').html unit.team + 1
     else
-        element('selected-type').innerHTML = '---'
-        element('selected-movement').innerHTML = '---'
-        element('selected-team').innerHTML = '---'
+        $('#selected-type').html '---'
+        $('#selected-movement').html '---'
+        $('#selected-team').html '---'
 
 @update_under_cursor = (unit, structure, terrain) ->
     if unit?
-        element('hover-unit-type').innerHTML = unit.type
-        element('hover-unit-team').innerHTML = unit.team + 1
+        $('#hover-unit-type').html unit.type
+        $('#hover-unit-team').html unit.team + 1
     else
-        element('hover-unit-type').innerHTML = '---'
-        element('hover-unit-team').innerHTML = '---'
+        $('#hover-unit-type').html '---'
+        $('#hover-unit-team').html '---'
 
     if structure?
-        element('hover-structure-type').innerHTML = structure.type
+        $('#hover-structure-type').html structure.type
     else
-        element('hover-structure-type').innerHTML = '---'
+        $('#hover-structure-type').html '---'
 
     if terrain?
-        element('hover-terrain-type').innerHTML = terrain.type
-        element('hover-terrain-cost').innerHTML = terrain.movement_cost
+        $('#hover-terrain-type').html terrain.type
+        $('#hover-terrain-cost').html terrain.movement_cost
     else
-        element('hover-terrain-type').innerHTML = '---'
-        element('hover-terrain-cost').innerHTML = 1
+        $('#hover-terrain-type').html '---'
+        $('#hover-terrain-cost').html 1
